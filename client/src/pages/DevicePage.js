@@ -33,13 +33,13 @@ const DevicePage = () => {
                         className="d-flex flex-column align-items-center justify-content-around"
                         style={{width: 300, height: 300, fontSize: 32, border: '5px solid lightgray'}}
                     >
-                        <h3>От: {device.price} руб.</h3>
-                        <Button variant={"outline-dark"}>Добавить в корзину</Button>
+                        <h3>{device.price}</h3>
+                        <Button variant={"outline-dark"}>Buy now</Button>
                     </Card>
                 </Col>
             </Row>
             <Row className="d-flex flex-column m-3">
-                <h1>Характеристики</h1>
+                <h1>Characteristics</h1>
                 {device.info.map((info, index) =>
                     <Row key={info.id} style={{background: index % 2 === 0 ? 'lightgray' : 'transparent', padding: 10}}>
                         {info.title}: {info.description}
