@@ -10,6 +10,7 @@ export default class DeviceStore {
         this._page = 1
         this._totalCount = 0
         this._limit = 10
+        this._basket = []
         makeAutoObservable(this)
     }
 
@@ -36,6 +37,18 @@ export default class DeviceStore {
     }
     setTotalCount(count) {
         this._totalCount = count
+    }
+    addToBasket(device) {
+        this._basket.push(device)
+    }
+    removeFromBasket(deviceId) {
+        const index = this._basket.findIndex((device) => device.id === deviceId);
+        if (index >= 0) {
+            this._basket.splice(index, 1);
+        }
+    }
+    get basket() {
+        return this._basket;
     }
 
     get types() {

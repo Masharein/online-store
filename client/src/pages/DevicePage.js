@@ -1,15 +1,31 @@
-import React, {useEffect, useState} from 'react';
+import React, {useEffect, useState, useContext} from 'react';
 import {Button, Card, Col, Container, Image, Row} from "react-bootstrap";
 import bigStar from '../assets/bigStar.png'
 import {useParams} from 'react-router-dom'
 import {fetchOneDevice} from "../http/deviceAPI";
+import {Context} from "../index";
+import { BASKET_ROUTE } from '../utils/consts';
+import {useNavigate} from 'react-router-dom';
 
 const DevicePage = () => {
-    const [device, setDevice] = useState({info: []})
-    const {id} = useParams()
+    const [device, setDevice] = useState({ info: [] });
+    const { id } = useParams();
+    const navigate = useNavigate();
+    const { device: deviceStore } = useContext(Context);
+
     useEffect(() => {
-        fetchOneDevice(id).then(data => setDevice(data))
-    }, [id])
+        fetchOneDevice(id).then((data) => setDevice(data));
+    }, [id]);
+
+    const handleBuy = () => {
+        const basketDevice = {
+            id: device.id,
+            name: device.name,
+            price: device.price,
+        };
+        deviceStore.addToBasket(basketDevice);
+        navigate(BASKET_ROUTE, { state: { purchasedDeviceId: device.id } });
+    };
 
     return (
         <Container className="mt-3">
@@ -34,7 +50,7 @@ const DevicePage = () => {
                         style={{width: 300, height: 300, fontSize: 32, border: '5px solid lightgray'}}
                     >
                         <h3>₪{device.price}</h3>
-                        <Button variant={"outline-dark"}>Buy now</Button>
+                        <Button variant={"outline-dark"} onClick={handleBuy}>Buy now</Button>
                     </Card>
                 </Col>
             </Row>
@@ -51,3 +67,4 @@ const DevicePage = () => {
 };
 
 export default DevicePage;
+
